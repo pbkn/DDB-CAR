@@ -1,0 +1,4 @@
+ddbcar\App.class
+ddbcar\model\TargetDDBSchema.class
+ddbcar\model\TargetDDBSchema$TargetDDBSchemaBuilder.class
+ddbcar\util\Constants.class

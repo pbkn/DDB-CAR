@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Lambda name="Lambda" format="${env:AWS_LAMBDA_LOG_FORMAT:-TEXT}">
+            <LambdaTextFormat>
+                <PatternLayout>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %-5p %c{1}:%L - %m%n</pattern>
+                </PatternLayout>
+            </LambdaTextFormat>
+            <LambdaJSONFormat>
+                <JsonTemplateLayout eventTemplateUri="classpath:LambdaLayout.json" />
+            </LambdaJSONFormat>
+        </Lambda>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %X{AWSRequestId} %-5p %c{1}:%L - %m%n" />
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+<!--            <AppenderRef ref="Lambda" />-->
+            <AppenderRef ref="Console" />
+        </Root>
+    </Loggers>
+</Configuration>

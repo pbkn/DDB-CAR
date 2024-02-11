@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'DDB-CAR
+
+  Lambda Function for DynamoDB Cross Account Replication
+
+  '
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+Resources:
+  LambdaFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Role: arn:aws:iam::401135408972:role/DDB-CAR-Source-Role
+      CodeUri: LambdaFunction
+      Handler: ddbcar.App::handleRequest
+      Runtime: java8
+      MemorySize: 512
+      Environment:
+        Variables:
+          PARAM1: VALUE
+          JAVA_TOOL_OPTIONS: -XX:+TieredCompilation -XX:TieredStopAtLevel=1
+      Events:
+        Stream:
+          Type: DynamoDB
+          Properties:
+            Stream: arn:aws:dynamodb:ap-south-1:401135408972:table/Source-DDB/stream/2024-02-10T19:42:39.913
+            BatchSize: 1
+            StartingPosition: TRIM_HORIZON
+    Metadata:
+      SamResourceId: LambdaFunction
+Outputs:
+  LambdaFunction:
+    Description: DDB-CAR Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - LambdaFunction
+      - Arn
+  LambdaFunctionIamRole:
+    Description: Implicit IAM Role created for DDB-CAR function
+    Value:
+      Fn::GetAtt:
+      - LambdaFunction
+      - Arn
